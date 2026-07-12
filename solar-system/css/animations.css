@@ -1,0 +1,24 @@
+@keyframes panel-in{
+  from{opacity:0;transform:translateX(20px)}
+  to{opacity:1;transform:translateX(0)}
+}
+#info-panel:not(.hidden){animation:panel-in .35s cubic-bezier(.22,1,.36,1) both}
+
+@keyframes hud-in{
+  from{opacity:0;transform:translateY(-8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+#left-panel{animation:hud-in .5s .6s ease both}
+#top-bar{animation:hud-in .5s .4s ease both}
+
+@keyframes compare-in{
+  from{opacity:0;transform:translateX(-50%) translateY(20px)}
+  to{opacity:1;transform:translateX(-50%) translateY(0)}
+}
+#compare-panel:not(.hidden){animation:compare-in .35s cubic-bezier(.22,1,.36,1) both}
+
+@keyframes toast-in{
+  from{opacity:0;transform:translateX(-50%) translateY(-10px)}
+  to{opacity:1;transform:translateX(-50%) translateY(0)}
+}
+#tour-toast:not(.hidden){animation:toast-in .3s ease both}

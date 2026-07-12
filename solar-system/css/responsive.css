@@ -1,0 +1,19 @@
+@media (max-width: 600px) {
+  #hud {
+    width: calc(100% - 32px);
+    bottom: 16px; top: auto;
+    left: 16px; right: 16px;
+  }
+  #info-panel {
+    width: calc(100% - 32px);
+    right: 16px; left: 16px;
+    top: auto; bottom: 90px;
+    transform: none;
+  }
+  #info-panel.hidden {
+    transform: translateY(20px);
+  }
+  #info-panel:not(.hidden) {
+    animation: none;
+  }
+}

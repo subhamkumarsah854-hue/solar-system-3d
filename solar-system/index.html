@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Solar System — Interactive 3D Model</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Space+Mono&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="style.css?v=3"/>
+  <link rel="stylesheet" href="css/animations.css?v=3"/>
+  <link rel="stylesheet" href="css/responsive.css?v=3"/>
+</head>
+<body>
+
+  <div id="canvas-container"></div>
+  <div id="labels-container"></div>
+
+  <!-- ── TOP BAR ──────────────────────────────────────── -->
+  <div id="top-bar">
+    <div id="tb-brand">
+      ☀ Solar System
+      <div id="developer-credit">Developed by SUBHAM KUMAR SAH</div>
+    </div>
+    <div class="tb-chip" id="tb-date-chip">
+      <span class="tb-chip-label">SIM DATE</span>
+      <span class="tb-chip-val" id="tb-date">—</span>
+    </div>
+    <div class="tb-chip hidden" id="tb-follow-chip">
+      <span class="tb-chip-label">FOLLOWING</span>
+      <span class="tb-chip-val" id="tb-follow-name">—</span>
+    </div>
+    <div class="tb-chip" id="tb-speed-chip">
+      <span class="tb-chip-label">SPEED</span>
+      <span class="tb-chip-val" id="tb-speed-val">1.0×</span>
+    </div>
+    <div id="tb-hint">Press <kbd>?</kbd> for shortcuts</div>
+  </div>
+
+  <!-- ── LEFT PANEL ───────────────────────────────────── -->
+  <div id="left-panel">
+    <div class="panel-tabs">
+      <button class="tab-btn active" data-tab="controls">Controls</button>
+      <button class="tab-btn" data-tab="presets">Presets</button>
+      <button class="tab-btn" data-tab="tools">Tools</button>
+    </div>
+
+    <div class="tab-content active" id="tab-controls">
+      <label class="ctrl-label">Orbital Speed</label>
+      <div class="ctrl-inline">
+        <input type="range" id="speed-slider" min="0.001" max="30" step="0.001" value="0.05"/>
+        <span id="speed-value">—</span>
+      </div>
+      <div class="btn-row">
+        <button id="pause-btn" class="hud-btn">⏸ Pause</button>
+        <button id="reset-btn" class="hud-btn">↺ Reset</button>
+      </div>
+      <div class="btn-row">
+        <button id="audio-btn" class="hud-btn">🔊 Audio</button>
+        <button id="labels-btn" class="hud-btn active-btn">🏷 Labels</button>
+      </div>
+      <button id="habitable-zone-btn" class="hud-btn full-btn">🌿 Habitable Zone</button>
+      <label class="ctrl-label">Date / Epoch</label>
+      <div class="ctrl-inline date-inline">
+        <input id="date-input" class="date-input" type="datetime-local" />
+      </div>
+      <div class="btn-row">
+        <button id="set-date-btn" class="hud-btn">🗓 Jump</button>
+        <button id="now-date-btn" class="hud-btn">⏱ Now</button>
+      </div>
+      <div class="date-hint">Pick any date in history or the far future.</div>
+      <button id="overview-btn" class="hud-btn full-btn">🌌 Overview</button>
+    </div>
+
+    <div class="tab-content" id="tab-presets">
+      <div class="preset-group-label">Time scale</div>
+      <button class="preset-btn" data-speed="0.0001">⏱ Near real-time</button>
+      <button class="preset-btn" data-speed="0.00274">📅 1 day / sec</button>
+      <button class="preset-btn" data-speed="0.0833">📆 1 month / sec</button>
+      <button class="preset-btn active-preset" data-speed="0.05">🌍 Default</button>
+      <button class="preset-btn" data-speed="1">☄ 1 year / sec</button>
+      <button class="preset-btn" data-speed="10">🚀 10 years / sec</button>
+      <div class="preset-group-label" style="margin-top:12px">Jump to planet</div>
+      <div id="planet-jump-btns"></div>
+    </div>
+
+    <div class="tab-content" id="tab-tools">
+      <button class="tool-btn" id="tour-btn">🚀 Auto Tour</button>
+      <button class="tool-btn" id="quiz-btn">🧠 Planet Quiz</button>
+      <button class="tool-btn" id="compare-toggle-btn">⚖ Compare Planets</button>
+      <button class="tool-btn" id="orbit-btn">🛰 Toggle Orbits</button>
+      <div class="shortcut-grid">
+        <kbd>1</kbd><span>–</span><kbd>8</kbd><span>Focus planet</span>
+        <kbd>Space</kbd><span></span><span></span><span>Pause</span>
+        <kbd>Esc</kbd><span></span><span></span><span>Unfocus</span>
+        <kbd>←</kbd><kbd>→</kbd><span></span><span>Rotate view</span>
+        <kbd>↑</kbd><kbd>↓</kbd><span></span><span>Move camera</span>
+        <kbd>Shift + ↑</kbd><kbd>Shift + ↓</kbd><span></span><span>Tilt camera</span>
+        <kbd>Ctrl + ↑</kbd><kbd>Ctrl + ↓</kbd><span></span><span>Zoom in/out</span>
+        <kbd>O</kbd><span></span><span></span><span>Toggle orbits</span>
+        <kbd>T</kbd><span></span><span></span><span>Tour</span>
+        <kbd>Q</kbd><span></span><span></span><span>Quiz</span>
+        <kbd>L</kbd><span></span><span></span><span>Labels</span>
+        <kbd>V</kbd><span></span><span></span><span>Overview</span>
+        <kbd>C</kbd><span></span><span></span><span>Compare</span>
+        <kbd>+</kbd><span>/</span><kbd>−</kbd><span>Speed ±</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── INFO PANEL ───────────────────────────────────── -->
+  <div id="info-panel" class="hidden">
+    <button id="close-panel">✕</button>
+    <div id="panel-orb"></div>
+    <h2 id="panel-name"></h2>
+    <div id="panel-live">
+      <div class="live-row">
+        <span class="live-lbl">Distance from Sun</span>
+        <span class="live-val" id="live-dist">—</span>
+      </div>
+      <div class="live-row">
+        <span class="live-lbl">Orbital velocity</span>
+        <span class="live-val" id="live-vel">—</span>
+      </div>
+      <div class="live-row">
+        <span class="live-lbl">Position in orbit</span>
+        <span class="live-val" id="live-ang">—</span>
+      </div>
+    </div>
+    <div id="panel-body"></div>
+    <div class="panel-actions">
+      <button class="pact-btn" id="btn-follow">📍 Follow</button>
+      <button class="pact-btn" id="btn-set-a">Set A</button>
+      <button class="pact-btn" id="btn-set-b">Set B</button>
+    </div>
+  </div>
+
+  <!-- ── COMPARE PANEL ────────────────────────────────── -->
+  <div id="compare-panel" class="hidden">
+    <div id="cp-header">
+      <span>⚖ Planet Comparison</span>
+      <button id="close-compare">✕</button>
+    </div>
+    <div id="cp-body">
+      <div class="cp-slot" id="cp-a"><div class="cp-empty">Click <b>Set A</b> in any planet panel</div></div>
+      <div id="cp-divider"></div>
+      <div class="cp-slot" id="cp-b"><div class="cp-empty">Click <b>Set B</b> in any planet panel</div></div>
+    </div>
+  </div>
+
+  <!-- ── TOUR TOAST ────────────────────────────────────── -->
+  <div id="tour-toast" class="hidden">
+    <div id="tt-label">AUTO TOUR</div>
+    <div id="tt-name"></div>
+    <div id="tt-fact"></div>
+    <div id="tt-bar-wrap"><div id="tt-bar"></div></div>
+    <button id="tt-stop">✕ Stop</button>
+  </div>
+
+  <!-- ── QUIZ MODAL ────────────────────────────────────── -->
+  <div id="quiz-overlay" class="hidden">
+    <div id="quiz-modal">
+      <div id="quiz-header">
+        <span>🧠 Solar System Quiz</span>
+        <button id="close-quiz">✕</button>
+      </div>
+      <div id="quiz-prog-wrap"><div id="quiz-prog-bar"></div></div>
+      <div id="quiz-num"></div>
+      <div id="quiz-q"></div>
+      <div id="quiz-opts"></div>
+      <div id="quiz-feedback" class="hidden"></div>
+      <button id="quiz-next" class="hidden">Next →</button>
+      <div id="quiz-result" class="hidden">
+        <div id="result-score"></div>
+        <div id="result-msg"></div>
+        <button id="quiz-again">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LOADING ────────────────────────────────────────── -->
+  <div id="loading">
+    <div class="loader-orbit">
+      <div class="loader-sun"></div>
+      <div class="loader-planet"></div>
+    </div>
+    <p>Initialising Solar System…</p>
+    <p class="loading-credit">Developed by SUBHAM KUMAR SAH</p>
+  </div>
+
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script defer src="js/data.js?v=3"></script>
+  <script defer src="js/audio.js?v=3"></script>
+  <script defer src="js/planets.js?v=3"></script>
+  <script defer src="js/controls.js?v=3"></script>
+  <script defer src="js/moon.js?v=3"></script>
+  <script defer src="js/scene.js?v=3"></script>
+</body>
+</html>
