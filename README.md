@@ -3,7 +3,7 @@
 A physics-accurate, interactive solar system simulation built from scratch
 using Three.js, real Kepler orbital mechanics, and procedural planet textures.
 
-🔗 **Live Demo:**  https://subhamkumarsah854-hue.github.io/solar-system-3d/
+🔗 **Live Demo:**  https://subhamkumarsah854-hue.github.io/solar-system-3d/solar-system/
 
 ---
 
